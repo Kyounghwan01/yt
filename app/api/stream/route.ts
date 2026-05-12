@@ -41,9 +41,13 @@ export async function GET(req: NextRequest) {
   const url = `https://www.youtube.com/watch?v=${videoId}`;
 
   return new Promise<NextResponse>((resolve) => {
+    const extractorArgs = process.env.RENDER_SERVICE_NAME
+      ? ["--extractor-args", "youtube:player_client=tv_embedded,web"]
+      : [];
+
     const ytdlp = spawn("yt-dlp", [
       ...cookiesArgs(),
-      "--extractor-args", "youtube:player_client=ios",
+      ...extractorArgs,
       "-f", "bestaudio[ext=m4a]/bestaudio/best",
       "--get-url",
       "--no-warnings",

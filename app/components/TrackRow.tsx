@@ -19,10 +19,10 @@ export default function TrackRow({ track, active, saved, onPlay, onToggleSave }:
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={track.thumbnail}
+        src={track.thumbnail || undefined}
         alt={track.title}
         className="flex-shrink-0 object-cover"
-        style={{ width: 56, height: 42, borderRadius: 8 }}
+        style={{ width: 56, height: 42, borderRadius: 8, background: "#E8E6F0" }}
       />
 
       <div className="flex-1 min-w-0">

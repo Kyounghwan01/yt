@@ -28,7 +28,7 @@ export default function Player() {
         <div className="flex items-center gap-2.5" style={{ padding: "10px 12px 8px" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={currentTrack.thumbnail}
+            src={currentTrack.thumbnail || undefined}
             alt={currentTrack.title}
             className="flex-shrink-0 object-cover"
             style={{ width: 44, height: 33, borderRadius: 8 }}

@@ -40,10 +40,10 @@ export default function SortableTrackRow({ track, isActive, onPlay, onRemove }: 
 
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={track.thumbnail}
+        src={track.thumbnail || undefined}
         alt={track.title}
         className="flex-shrink-0 object-cover"
-        style={{ width: 52, height: 40, borderRadius: 8 }}
+        style={{ width: 52, height: 40, borderRadius: 8, background: "#E8E6F0" }}
       />
 
       <div className="flex-1 min-w-0">

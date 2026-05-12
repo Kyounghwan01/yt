@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         .filter(Boolean)
         .map((line) => {
           const [id, title, duration, thumbnail, uploader] = line.split("|");
-          return { id, title, duration: parseInt(duration) || 0, thumbnail, uploader };
+          return { id, title, duration: parseInt(duration) || 0, thumbnail: thumbnail?.startsWith("http") ? thumbnail : "", uploader };
         });
 
       settle(NextResponse.json(results));
