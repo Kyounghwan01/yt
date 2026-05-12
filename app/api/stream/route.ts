@@ -4,9 +4,18 @@ import { NextRequest, NextResponse } from "next/server";
 
 function cookiesArgs(): string[] {
   const src = process.env.COOKIES_PATH ?? "/etc/secrets/cookies.txt";
-  if (!existsSync(src)) return [];
+  if (!existsSync(src)) {
+    console.log("[cookies] not found:", src);
+    return [];
+  }
   const tmp = "/tmp/cookies.txt";
-  try { copyFileSync(src, tmp); } catch { return ["--cookies", src]; }
+  try {
+    copyFileSync(src, tmp);
+    console.log("[cookies] copied to", tmp);
+  } catch (e) {
+    console.log("[cookies] copy failed, using src:", e);
+    return ["--cookies", src];
+  }
   return ["--cookies", tmp];
 }
 
