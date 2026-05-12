@@ -43,6 +43,7 @@ export async function GET(req: NextRequest) {
   return new Promise<NextResponse>((resolve) => {
     const ytdlp = spawn("yt-dlp", [
       ...cookiesArgs(),
+      "--extractor-args", "youtube:player_client=ios",
       "-f", "bestaudio[ext=m4a]/bestaudio/best",
       "--get-url",
       "--no-warnings",
