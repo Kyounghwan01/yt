@@ -41,13 +41,19 @@ export async function GET(req: NextRequest) {
   const url = `https://www.youtube.com/watch?v=${videoId}`;
 
   return new Promise<NextResponse>((resolve) => {
-    const extractorArgs = process.env.RENDER_SERVICE_NAME
-      ? ["--extractor-args", "youtube:player_client=tv_embedded,web"]
-      : [];
+    const poTokenArgs: string[] = [];
+    if (process.env.YT_PO_TOKEN) {
+      poTokenArgs.push("--po-token", `youtube.innertube+${process.env.YT_PO_TOKEN}`);
+      console.log("[po-token] using PO token");
+    }
+    if (process.env.YT_VISITOR_DATA) {
+      poTokenArgs.push("--extractor-args", `youtube:visitor_data=${process.env.YT_VISITOR_DATA}`);
+      console.log("[po-token] using visitor data");
+    }
 
     const ytdlp = spawn("yt-dlp", [
       ...cookiesArgs(),
-      ...extractorArgs,
+      ...poTokenArgs,
       "-f", "bestaudio[ext=m4a]/bestaudio/best",
       "--get-url",
       "--no-warnings",
