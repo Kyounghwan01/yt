@@ -1,5 +1,11 @@
 import { spawn } from "child_process";
+import { existsSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+
+function cookiesArgs(): string[] {
+  const path = process.env.COOKIES_PATH ?? "/etc/secrets/cookies.txt";
+  return existsSync(path) ? ["--cookies", path] : [];
+}
 
 const PAGE_SIZE = 10;
 
@@ -28,6 +34,7 @@ export async function GET(req: NextRequest) {
     };
 
     const ytdlp = spawn("yt-dlp", [
+      ...cookiesArgs(),
       `ytsearch${total}:${query}`,
       "--print", "%(id)s|%(title)s|%(duration)s|%(thumbnail)s|%(uploader)s",
       "--no-download",

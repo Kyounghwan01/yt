@@ -1,5 +1,11 @@
 import { spawn } from "child_process";
+import { existsSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+
+function cookiesArgs(): string[] {
+  const path = process.env.COOKIES_PATH ?? "/etc/secrets/cookies.txt";
+  return existsSync(path) ? ["--cookies", path] : [];
+}
 
 const cache = new Map<string, { url: string; expiresAt: number }>();
 
@@ -24,6 +30,7 @@ export async function GET(req: NextRequest) {
 
   return new Promise<NextResponse>((resolve) => {
     const ytdlp = spawn("yt-dlp", [
+      ...cookiesArgs(),
       "-f", "bestaudio[ext=m4a]/bestaudio/best",
       "--get-url",
       "--no-warnings",
