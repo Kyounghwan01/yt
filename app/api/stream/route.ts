@@ -33,6 +33,11 @@ export async function GET(req: NextRequest) {
     let audioUrl = "";
     let stderr = "";
 
+    ytdlp.on("error", (err) => {
+      console.error("yt-dlp spawn error:", err.message);
+      resolve(NextResponse.json({ error: "yt-dlp not found" }, { status: 500 }));
+    });
+
     ytdlp.stdout.on("data", (data: Buffer) => { audioUrl += data.toString(); });
     ytdlp.stderr.on("data", (data: Buffer) => { stderr += data.toString(); });
 

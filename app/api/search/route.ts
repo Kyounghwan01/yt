@@ -45,6 +45,12 @@ export async function GET(req: NextRequest) {
     let stdout = "";
     let stderr = "";
 
+    ytdlp.on("error", (err) => {
+      clearTimeout(timer);
+      console.error("yt-dlp spawn error:", err.message);
+      settle(NextResponse.json({ error: "yt-dlp not found" }, { status: 500 }));
+    });
+
     ytdlp.stdout.on("data", (data: Buffer) => { stdout += data.toString(); });
     ytdlp.stderr.on("data", (data: Buffer) => { stderr += data.toString(); });
 
